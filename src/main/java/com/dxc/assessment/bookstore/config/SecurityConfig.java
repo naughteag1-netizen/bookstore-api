@@ -26,8 +26,8 @@ public class SecurityConfig {
             "/api/books/**"
     };
 
-    private static final String ROLE_USER = "USER";
-    private static final String ROLE_ADMIN = "ADMIN";
+    private static final String USER = "USER";
+    private static final String ADMIN = "ADMIN";
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -38,10 +38,8 @@ public class SecurityConfig {
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
 
                         // 🔐 role-based API rules
-                        .requestMatchers(HttpMethod.GET, USER_ENDPOINTS).hasAnyRole(ROLE_USER, ROLE_ADMIN)
-                        .requestMatchers(HttpMethod.POST, USER_ENDPOINTS).hasAnyRole(ROLE_USER, ROLE_ADMIN)
-                        .requestMatchers(HttpMethod.PUT, USER_ENDPOINTS).hasAnyRole(ROLE_USER, ROLE_ADMIN)
-                        .requestMatchers(HttpMethod.DELETE, USER_ENDPOINTS).hasRole(ROLE_ADMIN)
+                        .requestMatchers(USER_ENDPOINTS).hasAnyRole(USER, ADMIN)
+                        .requestMatchers(HttpMethod.DELETE, USER_ENDPOINTS).hasRole(ADMIN)
 
                         .anyRequest().authenticated()
                 )
@@ -53,12 +51,12 @@ public class SecurityConfig {
     public InMemoryUserDetailsManager userDetailsService(PasswordEncoder encoder) {
         var user = User.withUsername("user")
                 .password(encoder.encode("password"))
-                .roles(ROLE_USER)
+                .roles(USER)
                 .build();
 
         var admin = User.withUsername("admin")
                 .password(encoder.encode("adminpass"))
-                .roles(ROLE_ADMIN)
+                .roles(ADMIN)
                 .build();
 
         return new InMemoryUserDetailsManager(user, admin);

@@ -16,6 +16,7 @@ public class Book {
 
     private String title;
 
+    @Column(name = "publish_year")
     private Integer year;
 
     private Double price;

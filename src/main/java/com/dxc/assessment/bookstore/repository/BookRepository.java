@@ -11,15 +11,15 @@ public interface BookRepository extends JpaRepository<Book, String> {
 
     List<Book> findByTitle(String title);
 
-    @Query("SELECT b FROM Book b JOIN b.authors a WHERE a.name = :name")
-    List<Book> findByAuthorName(@Param("name") String name);
+    @Query("SELECT DISTINCT b FROM Book b JOIN b.authors a WHERE a.name = :authorName")
+    List<Book> findByAuthorName(@Param("authorName") String authorName);
 
     @Query("""
-        SELECT b FROM Book b JOIN b.authors a
-        WHERE b.title = :title AND a.name = :name
+        SELECT DISTINCT b FROM Book b JOIN b.authors a
+        WHERE b.title = :title AND a.name = :authorName
     """)
     List<Book> findByTitleAndAuthor(
             @Param("title") String title,
-            @Param("name") String name
+            @Param("authorName") String authorName
     );
 }

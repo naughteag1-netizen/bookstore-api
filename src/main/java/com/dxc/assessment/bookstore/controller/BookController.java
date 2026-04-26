@@ -17,7 +17,7 @@ public class BookController {
 
     private final BookService bookService;
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<BookResponse> addBook(@RequestBody BookRequest request) {
         return ResponseEntity.ok(bookService.addBook(request));
     }
@@ -29,14 +29,14 @@ public class BookController {
         return ResponseEntity.ok(bookService.updateBook(isbn, request));
     }
 
-    @GetMapping
+    @GetMapping("/search")
     public ResponseEntity<List<BookResponse>> findBooks(
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String author) {
         return ResponseEntity.ok(bookService.findBooks(title, author));
     }
 
-    @DeleteMapping("/{isbn}")
+    @DeleteMapping("/{isbn}/delete")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteBook(@PathVariable String isbn) {
         bookService.deleteBook(isbn);
