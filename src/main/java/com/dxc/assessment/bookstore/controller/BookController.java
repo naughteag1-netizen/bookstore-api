@@ -36,7 +36,7 @@ public class BookController {
         return ResponseEntity.ok(bookService.findBooks(title, author));
     }
 
-    @DeleteMapping("/{isbn}/delete")
+    @DeleteMapping("/{isbn}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteBook(@PathVariable String isbn) {
         bookService.deleteBook(isbn);
